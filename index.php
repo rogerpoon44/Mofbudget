@@ -140,7 +140,7 @@
 </nav>
 
 <div class="banner">
-  <img src="assets/banner.jpg">
+  <img src="assets/banner1.jpg">
 </div>
 
   <div class="mx-auto" style="width: 92%; margin-top: 23px; padding: 20px 16px; max-width: 500px;background: #FFF; border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;" >
